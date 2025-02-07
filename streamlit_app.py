@@ -68,41 +68,25 @@ def get_temp_data():
 
     # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
     DATA_FILENAME = Path(__file__).parent/'data/AverageCMASTtemp.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
+    temp_df = pd.read_csv(DATA_FILENAME)
 
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
+    # Convert times from string to datetime objects
+    temp_df['Time'] = pd.to_datetime(temp_df['Time'], format = 'mixed')
+    
+    # Get only rows for data in May
+    temp_df['Month'] = [dt.month for dt in temp_df['Time']]
+    temp_df = temp_df[temp_df['Month'] == 5]
 
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
-    )
+    # Get only rows for May 14
+    temp_df['Day'] = [dt.day for dt in temp_df['Time']]
+    temp_df = temp_df[temp_df['Day'] == 14]
 
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
+    temp_df['Hour'] = [dt.hour for dt in temp_df['Time']]
 
-    return gdp_df
+    return temp_df
 
 gdp_df = get_gdp_data()
+temp_df = get_temp_data()
 
 # -----------------------------------------------------------------------------
 # Draw the actual page
@@ -111,7 +95,7 @@ gdp_df = get_gdp_data()
 '''
 # :fire: Temperature dashboard
 
-Browse water temperature data collected by each sensor at DUML Aquafarm and CMAST oyster farm between April and October 2024.
+Browse water temperature data collected by each sensor at DUML Aquafarm and CMAST oyster farm during May 2024.
 '''
 
 # Add some spacing
@@ -158,6 +142,63 @@ st.line_chart(
     y='GDP',
     color='Country Code',
 )
+
+''
+''
+
+# Add some spacing! ------------- new stuff -----------
+''
+''
+
+temp_df
+
+min_hour = temp_df['Hour'].min()
+max_hour = temp_df['Hour'].max()
+
+from_hour, to_hour = st.slider(
+    'Which hours are you interested in?',
+    min_value=min_hour,
+    max_value=max_hour,
+    value=[min_hour, max_hour],
+    key = 2)
+
+sensors = temp_df['Location'].unique()
+
+if not len(sensors):
+    st.warning("Select at least one sensor")
+
+selected_sensors = st.multiselect(
+    'Which sensors would you like to view?',
+    sensors,
+    ['Array', 'Line 1A', 'Line 1B'],
+    key = 3
+    )
+
+''
+''
+''
+
+# Filter the data
+filtered_temp_df = temp_df[
+    (temp_df['Location'].isin(selected_sensors))
+    & (temp_df['Hour'] <= to_hour)
+    & (from_hour <= temp_df['Hour'])
+]
+
+st.header('Water temperature over time', divider='gray')
+
+''
+
+st.line_chart(
+    filtered_temp_df,
+    x='Hour',
+    y='TempC',
+    color='Location',
+)
+
+temp_df
+
+filtered_temp_df
 
 ''
 ''
