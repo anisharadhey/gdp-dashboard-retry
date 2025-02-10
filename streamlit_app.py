@@ -132,9 +132,9 @@ Browse water temperature data collected by each sensor at DUML Aquafarm and CMAS
 #     & (from_year <= gdp_df['Year'])
 # ]
 
-st.header('Water temperature over time', divider='gray')
+# st.header('Water temperature over time', divider='gray')
 
-''
+# ''
 
 # st.line_chart(
 #     filtered_gdp_df,
