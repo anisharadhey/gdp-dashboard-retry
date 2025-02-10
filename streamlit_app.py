@@ -85,7 +85,7 @@ def get_temp_data():
 
     return temp_df
 
-gdp_df = get_gdp_data()
+# gdp_df = get_gdp_data()
 temp_df = get_temp_data()
 
 # -----------------------------------------------------------------------------
@@ -95,53 +95,53 @@ temp_df = get_temp_data()
 '''
 # :fire: Temperature dashboard
 
-Browse water temperature data collected by each sensor at DUML Aquafarm and CMAST oyster farm during May 2024.
+Browse water temperature data collected by each sensor at DUML Aquafarm and CMAST oyster farm during May 14th, 2024.
 '''
 
 # Add some spacing
 ''
 ''
 
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
+# min_value = gdp_df['Year'].min()
+# max_value = gdp_df['Year'].max()
 
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
+# from_year, to_year = st.slider(
+#     'Which years are you interested in?',
+#     min_value=min_value,
+#     max_value=max_value,
+#     value=[min_value, max_value])
 
-countries = gdp_df['Country Code'].unique()
+# countries = gdp_df['Country Code'].unique()
 
-if not len(countries):
-    st.warning("Select at least one country")
+# if not len(countries):
+#     st.warning("Select at least one country")
 
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['USA', 'MEX', 'JPN'])
+# selected_countries = st.multiselect(
+#     'Which countries would you like to view?',
+#     countries,
+#     ['USA', 'MEX', 'JPN'])
 
-''
-''
-''
+# ''
+# ''
+# ''
 
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
+# # Filter the data
+# filtered_gdp_df = gdp_df[
+#     (gdp_df['Country Code'].isin(selected_countries))
+#     & (gdp_df['Year'] <= to_year)
+#     & (from_year <= gdp_df['Year'])
+# ]
 
 st.header('Water temperature over time', divider='gray')
 
 ''
 
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
-)
+# st.line_chart(
+#     filtered_gdp_df,
+#     x='Year',
+#     y='GDP',
+#     color='Country Code',
+# )
 
 ''
 ''
@@ -150,7 +150,7 @@ st.line_chart(
 ''
 ''
 
-temp_df
+# temp_df
 
 min_hour = temp_df['Hour'].min()
 max_hour = temp_df['Hour'].max()
@@ -196,9 +196,9 @@ st.line_chart(
     color='Location',
 )
 
-temp_df
+# temp_df
 
-filtered_temp_df
+# filtered_temp_df
 
 ''
 ''
