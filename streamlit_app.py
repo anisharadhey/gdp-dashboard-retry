@@ -12,23 +12,24 @@ st.set_page_config(
 
 @st.cache_data
 
-def get_temp_data():
+def read_data(filename):
     """Grab temperature data from a CSV file.
 
     This uses caching to avoid having to read the file every time.
     """
 
     # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/AverageCMASTtemp.csv'
-    temp_df = pd.read_csv(DATA_FILENAME)
+    # DATA_FILENAME = Path(__file__).parent/'data/'
+    path = 'data/'
+    temp_df = pd.read_csv(path + filename)
 
     # Convert times from string to datetime objects
     temp_df['Time'] = pd.to_datetime(temp_df['Time'], format = 'mixed')
     
     # Make colymns for month, day and time
-    temp_df['Month'] = [dt.month for dt in temp_df['Time']]
-    temp_df['Day'] = [dt.day for dt in temp_df['Time']]
-    temp_df['Hour'] = [dt.hour for dt in temp_df['Time']]
+    # temp_df['Month'] = [dt.month for dt in temp_df['Time']]
+    # temp_df['Day'] = [dt.day for dt in temp_df['Time']]
+    # temp_df['Hour'] = [dt.hour for dt in temp_df['Time']]
 
     # Get only rows for data in May
     # temp_df = temp_df[(temp_df['Month'] == 5)]
@@ -39,7 +40,7 @@ def get_temp_data():
     return temp_df
 
 # gdp_df = get_gdp_data()
-temp_df = get_temp_data()
+temp_df = read_data('AverageCMASTtemp.csv')
 
 # temp_df
 
