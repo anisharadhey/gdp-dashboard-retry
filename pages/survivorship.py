@@ -13,7 +13,7 @@ def get_survivor_data():
     """
 
     # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/OysterMortalityData_Processed.csv'
+    DATA_FILENAME = 'data/OysterMortalityData_Processed.csv'
     surv_df = pd.read_csv(DATA_FILENAME)
 
     # Remove empty columns and rows from the read-in CSV file
