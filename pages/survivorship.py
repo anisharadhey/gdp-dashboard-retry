@@ -37,7 +37,7 @@ surv_df = get_survivor_data()
 '''
 # :oyster: Survivorship dashboard
 
-Browse water oyster survivorship curves from CMAST oyster farm between May and October 2024.
+Browse water oyster survivorship curves from CMAST and DUML oyster farms between May and October 2024.
 '''
 
 ''
