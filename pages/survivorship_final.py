@@ -40,11 +40,9 @@ surv_df = get_survivor_data()
 
 # Set the title that appears at the top of the page.
 '''
-# :oyster: Survivorship dashboard
+## :oyster: Oyster Growth and Mortality
 
-Browse water oyster survivorship curves from CMAST and DUML oyster farms between May and October 2024.
 '''
-
 ''
 
 # # Make a slider based on times
@@ -85,58 +83,83 @@ Browse water oyster survivorship curves from CMAST and DUML oyster farms between
 filtered_df = surv_df[0]
 MortalityContinuous = surv_df[1]
 
+import streamlit as st
+import altair as alt
 
 # Define custom color scale
 color_scale = alt.Scale(
     domain=['CMAST', 'DUML'],
-    range=['red', '#00539B']
+    range=['red', '#00539B']  # Using Duke Royal Blue as an example
 )
 
 # Create the base chart for the first dataframe
 base = alt.Chart(filtered_df).encode(
-    x='Date:T',
-    y=alt.Y('Survivorship_StartingDensityBase_Impute100_Percent:Q', scale=alt.Scale(domain=[55, 100])),  # Set y-axis range
+    x=alt.X('Date:T', axis=alt.Axis(title='Date')),  # Add x-axis label
+    y=alt.Y('Survivorship_StartingDensityBase_Impute100_Percent:Q', scale=alt.Scale(domain=[48, 102]), axis=alt.Axis(title='Survivorship per bag (%)')),  # Add y-axis label
     color=alt.Color('Site:N', scale=color_scale, legend=alt.Legend(title="Site", orient='bottom')),
-    tooltip=['Date:T', 'Survivorship_StartingDensityBase_Impute100_Percent:Q', 'Site:N', 'sd:Q']
+    tooltip=[alt.Tooltip('Date:T', title='Date'), 
+             alt.Tooltip('Site:N', title='Site'), 
+             alt.Tooltip('Survivorship_StartingDensityBase_Impute100_Percent:Q', title='Mean % Survivorship', format='.1f'), 
+             alt.Tooltip('sd:Q', title='Error (SD)', format='.1f')]  # Custom tooltip for solid points
 ).mark_point(
     filled=True,
     size=300,  # Update point size to 300
     opacity=1  # Set opacity to 100%
 )
 
-# Create the error bars for the first dataframe
-error_bars = alt.Chart(filtered_df).mark_errorbar(
-    size=2,  # Increase the width of the error bars
+# Create the error bars for the first dataframe with custom tooltip
+error_bars = alt.Chart(filtered_df).transform_calculate(
+    mean_value='datum.Survivorship_StartingDensityBase_Impute100_Percent',
+    mean_plus_sd='datum.Survivorship_StartingDensityBase_Impute100_Percent + datum.sd',
+    mean_minus_sd='datum.Survivorship_StartingDensityBase_Impute100_Percent - datum.sd'
+).mark_errorbar(
+    size=10,  # Increase the width of the error bars
     opacity=1  # Set opacity to 100%
 ).encode(
     x='Date:T',
-    y=alt.Y('Survivorship_StartingDensityBase_Impute100_Percent:Q'),
+    y=alt.Y('Survivorship_StartingDensityBase_Impute100_Percent:Q', scale=alt.Scale(domain=[55, 100]), axis=alt.Axis(title='Survivorship per bag (%)')),  # Add y-axis label
     yError='sd:Q',
-    color=alt.Color('Site:N', scale=color_scale)  # Match color of error bars to points
+    color=alt.Color('Site:N', scale=color_scale),  # Match color of error bars to points
+    tooltip=[alt.Tooltip('Date:T', title='Date'),
+        alt.Tooltip('mean_value:Q', title='Mean Value', format='.1f'),
+             alt.Tooltip('mean_plus_sd:Q', title='Mean + SD', format='.1f'),
+             alt.Tooltip('mean_minus_sd:Q', title='Mean - SD', format='.1f')]  # Custom tooltip for error bars
 )
 
 # Create the scatter points for the second dataframe
 mortality_points = alt.Chart(MortalityContinuous).encode(
     x='Date:T',
-    y='Survivorship_StartingDensityBase_Impute100_Percent:Q',
-    color=alt.Color('Site:N', scale=color_scale, legend=None),  # Use the same color scale
-    tooltip=['Date:T', 'Survivorship_StartingDensityBase_Impute100_Percent:Q', 'Site:N']
+    y=alt.Y('Survivorship_StartingDensityBase_Impute100_Percent:Q', scale=alt.Scale(domain=[55, 100]), axis=alt.Axis(title='Survivorship per bag (%)')),  # Add y-axis label
+    color=alt.Color('Site:N', scale=color_scale),  # Use the same color scale
+    tooltip=[alt.Tooltip('Date:T', title='Date'), 
+             alt.Tooltip('Site:N', title='Site'), 
+             alt.Tooltip('Survivorship_StartingDensityBase_Impute100_Percent:Q', title='% Survivorship')]  # Custom tooltip for faint points
 ).mark_point(
     filled=True,
     size=200,  # Set point size to 300
-    opacity=0.075  # Set lower opacity for the second dataframe points
+    opacity=0.15  # Set slightly higher opacity for the second dataframe points
 )
 
 # Layer the points and error bars
-chart = alt.layer(base, error_bars, mortality_points).properties(
+# chart = alt.layer(base, error_bars, mortality_points).properties(
+chart = alt.layer(base, mortality_points, error_bars, base).properties(
     width=1000,
-    height=600,
-    title='Survivorship Starting Density Base Over Time at CMAST and DUML'
-)
+    height=600
+).interactive()
 
 # Display the chart in Streamlit
 st.altair_chart(chart, use_container_width=True)
    
+'''
+Percent of oysters surviving in each bag, measured bimonthly (transparent points) and the 
+average survivorship at each site (opaque points; error bars show ± standard deviation). 
+**More mortality was observed at CMAST than DUML, particularly during and after August, but overall, 
+mass mortality was not observed.**
+'''
+'''
+CMAST = Center for Marine Sciences and Technology, North Carolina State Univeristy
+\n DUML = Duke University Marine Laboratory
+'''
 
 # #SELECTION 2 COLUMN
 # with col2:
