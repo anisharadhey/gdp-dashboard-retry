@@ -6,8 +6,8 @@ from pathlib import Path
 
 # Set the title and favicon that appear in the Browser's tab bar.
 st.set_page_config(
-    page_title='Temperature dashboard',
-    page_icon=':fire:', # This is an emoji shortcode. Could be a URL too.
+    page_title='Climate Change Impacts on Farmed and Wild Oysters',
+    page_icon=':oyster:', # This is an emoji shortcode. Could be a URL too.
 )
 
 @st.cache_data
@@ -49,54 +49,54 @@ temp_df = read_data('AverageCMASTtemp.csv')
 
 # Set the title that appears at the top of the page.
 '''
-# :fire: Temperature dashboard
+# :oyster: Climate Change Impacts on Farmed and Wild Oysters
 
-Browse water temperature data collected at the CMAST oyster farm between May and October 2024.
+Explore our data using the tabs on the left.
 '''
 
 ''
 
-# Make a slider based on times
-min_time = temp_df['Time'].min().to_pydatetime()
-max_time = temp_df['Time'].max().to_pydatetime()
+# # Make a slider based on times
+# min_time = temp_df['Time'].min().to_pydatetime()
+# max_time = temp_df['Time'].max().to_pydatetime()
 
-from_time, to_time = st.slider(
-    'Which hours are you interested in?',
-    min_value = min_time,
-    max_value = max_time,
-    value=[min_time, max_time],
-    key = 2)
+# from_time, to_time = st.slider(
+#     'Which hours are you interested in?',
+#     min_value = min_time,
+#     max_value = max_time,
+#     value=[min_time, max_time],
+#     key = 2)
 
-''
+# ''
 
-sensors = temp_df['Location'].unique()
+# sensors = temp_df['Location'].unique()
 
-if not len(sensors):
-    st.warning("Select at least one sensor")
+# if not len(sensors):
+#     st.warning("Select at least one sensor")
 
-selected_sensors = st.multiselect(
-    'Which sensors would you like to view?',
-    sensors,
-    ['Array', 'Line 1A', 'Line 1B'],
-    key = 3
-    )
+# selected_sensors = st.multiselect(
+#     'Which sensors would you like to view?',
+#     sensors,
+#     ['Array', 'Line 1A', 'Line 1B'],
+#     key = 3
+#     )
 
-''
+# ''
 
-# Filter the data
-filtered_temp_df = temp_df[
-    (temp_df['Location'].isin(selected_sensors))
-    & (temp_df['Time'] <= to_time)
-    & (from_time <= temp_df['Time'])
-]
+# # Filter the data
+# filtered_temp_df = temp_df[
+#     (temp_df['Location'].isin(selected_sensors))
+#     & (temp_df['Time'] <= to_time)
+#     & (from_time <= temp_df['Time'])
+# ]
 
-st.header('Water temperature over time', divider='gray')
+# st.header('Water temperature over time', divider='gray')
 
-''
+# ''
 
-st.line_chart(
-    filtered_temp_df,
-    x='Time',
-    y='TempC',
-    color='Location',
-)
+# st.line_chart(
+#     filtered_temp_df,
+#     x='Time',
+#     y='TempC',
+#     color='Location',
+# )
