@@ -89,7 +89,7 @@ import altair as alt
 # Define custom color scale
 color_scale = alt.Scale(
     domain=['CMAST', 'DUML'],
-    range=['red', '#00539B']  # Using Duke Royal Blue as an example
+    range=['#DC3220', '#005AB5']  # Using color-blind friendly red-blue constrast from: https://davidmathlogic.com/colorblind/#%23005AB5-%23DC3220
 )
 
 # Create the base chart for the first dataframe
