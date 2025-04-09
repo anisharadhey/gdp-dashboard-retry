@@ -7,7 +7,7 @@ from pathlib import Path
 # Set the title and favicon that appear in the Browser's tab bar.
 st.set_page_config(
     page_title='Climate Change Impacts on Farmed and Wild Oysters',
-    page_icon=':oyster:', # This is an emoji shortcode. Could be a URL too.
+    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
 )
 
 @st.cache_data
@@ -49,7 +49,7 @@ temp_df = read_data('AverageCMASTtemp.csv')
 
 # Set the title that appears at the top of the page.
 '''
-# :oyster: Climate Change Impacts on Farmed and Wild Oysters
+# :earth_americas: Climate Change Impacts on Farmed and Wild Oysters
 
 Explore our data using the tabs on the left.
 '''

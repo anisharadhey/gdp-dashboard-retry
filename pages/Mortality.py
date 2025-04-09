@@ -40,7 +40,7 @@ surv_df = get_survivor_data()
 
 # Set the title that appears at the top of the page.
 '''
-## :oyster: Oyster Growth and Mortality
+## :oyster: Oyster Mortality
 
 '''
 ''
