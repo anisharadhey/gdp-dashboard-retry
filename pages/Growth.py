@@ -39,7 +39,7 @@ duml_data = growth_data[growth_data['site'] == 'DUML']
 group_order = ['100', '150', '200', 'BS', 'CN', 'CS', 'SJ', 'EveryOther', 'OnceAWeek', 'TwiceAWeek']
 
 # Plot for CMAST
-cmast_plot = alt.Chart(cmast_data).mark_point(size=100, filled=True).encode(
+cmast_plot = alt.Chart(cmast_data).mark_point(size=300, filled=True, opacity=1).encode(
     x=alt.X('Group', sort=group_order),  # X-axis: Group with custom order
     y='growth_rate',  # Y-axis: Growth rate
     color=alt.Color('color_map', scale=None),  # Color points based on color_map column
@@ -61,7 +61,7 @@ cmast_hline = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(strokeDash=[5, 5], c
 )
 
 # Combine the point plot, error bars, and horizontal line
-cmast_final_plot = alt.layer(cmast_errorbars, cmast_plot, cmast_hline).configure_axis(
+cmast_final_plot = alt.layer(cmast_hline, cmast_errorbars, cmast_plot).configure_axis(
     labelAngle=45  # Rotate x-axis labels for readability
 ).configure_legend(
     orient='right'  # Place legend to the right
@@ -75,7 +75,7 @@ cmast_final_plot = alt.layer(cmast_errorbars, cmast_plot, cmast_hline).configure
 )
 
 # Plot for DUML
-duml_plot = alt.Chart(duml_data).mark_point(size=100, filled=True).encode(
+duml_plot = alt.Chart(duml_data).mark_point(size=300, filled=True, opacity=1).encode(
     x=alt.X('Group', sort=group_order),  # X-axis: Group with custom order
     y='growth_rate',  # Y-axis: Growth rate
     color=alt.Color('color_map', scale=None),  # Color points based on color_map column
@@ -97,7 +97,7 @@ duml_hline = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(strokeDash=[5, 5], co
 )
 
 # Combine the point plot, error bars, and horizontal line
-duml_final_plot = alt.layer(duml_errorbars, duml_plot, duml_hline).configure_axis(
+duml_final_plot = alt.layer(duml_hline, duml_errorbars, duml_plot).configure_axis(
     labelAngle=45  # Rotate x-axis labels for readability
 ).configure_legend(
     orient='right'  # Place legend to the right
