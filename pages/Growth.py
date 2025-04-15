@@ -194,13 +194,14 @@ st.altair_chart(final_plot, use_container_width=True)
 
 
 
-# '''
-# Percent of oysters surviving in each bag, measured bimonthly (transparent points) and the 
-# average survivorship at each site (opaque points; error bars show ± standard deviation). 
-# **More mortality was observed at CMAST than DUML, particularly during and after August, but overall, 
-# mass mortality was not observed.**
-# '''
-# '''
-# CMAST = Center for Marine Sciences and Technology, North Carolina State Univeristy
-# \n DUML = Duke University Marine Laboratory
-# '''
+'''
+Growth rates of living oysters separated by number of oysters per bag (bag density), oyster
+genetic strain, and bag flipping frequency. Growth rates were obtained from the slope of linear regression of 
+length measurements over time. The error bars show the 95% confidence interval of regression.
+**Oysters at DUML had significantly higher growth rates than oysters at CMAST. We find no significant
+differences between growth rates at an individual site based on bag density, genetic strain, or flipping frequency.**
+'''
+'''
+CMAST = Center for Marine Sciences and Technology, North Carolina State Univeristy
+\n DUML = Duke University Marine Laboratory
+'''
