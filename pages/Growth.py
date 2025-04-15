@@ -134,7 +134,7 @@ combined_data = pd.concat([cmast_data, duml_data])
 # Define the custom order for the groups
 group_order_density = ['50', '100', '150', '200']
 group_order_strain = ['BS', 'CN', 'CS', 'SJ']
-group_order_flipping = ['EveryOther', 'OnceAWeek', 'TwiceAWeek']
+group_order_flipping = ['Every other week', 'Once a week', 'Twice a week']
 
 # Define a function to create each subplot
 def create_subplot(data, group_order, x_label):
@@ -190,8 +190,6 @@ final_plot = alt.vconcat(
 
 # Display the plot in Streamlit
 st.altair_chart(final_plot, use_container_width=True)
-
-
 
 
 '''
